@@ -1,0 +1,33 @@
+{
+  "name": "sonotrak_backend",
+  "version": "1.0.0",
+  "description": "The backend version of sonotrak application ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "build": "ncc build index.js -o dist",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "history": "^5.3.0",
+    "jsonwebtoken": "^9.0.0",
+    "moment-timezone": "^0.5.40",
+    "mongoose": "^6.9.0",
+    "nodemon": "^2.0.20",
+    "request": "^2.88.2",
+    "swagger-ui-express": "^4.6.0",
+    "validator": "^13.9.0",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1"
+  }
+}

@@ -1,0 +1,2165 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "My API",
+        "description": "REST API for the sonotrak application."
+    },
+    "tags": [
+        {
+            "name": "Agency",
+            "description": "Operations related to agency management"
+        },
+        {
+            "name": "User",
+            "description": "Operations related to User management"
+        },
+        {
+            "name": "Session",
+            "description": "Operations related to Session management"
+        },
+        {
+            "name": "User/Agencies",
+            "description": "ADD/DROP user from an agency"
+        },
+        {
+            "name": "User/Vehicle",
+            "description": "ADD/DROP user from an vehicles"
+        },
+        {
+            "name": "User/Calendars",
+            "description": "ADD/DROP user from a calendars"
+        },
+        {
+            "name": "User/Stops",
+            "description": "ADD/DROP user from stops"
+        },
+        {
+            "name": "User/Stoptimes",
+            "description": "ADD/DROP user from stoptimes"
+        },
+        {
+            "name": "User/Routes",
+            "description": "ADD/DROP user from routes"
+        },
+        {
+            "name": "User/Trips",
+            "description": "ADD/DROP user from trips"
+        },
+        {
+            "name": "Calendar",
+            "description": "Operations related to Calendar management"
+        },
+        {
+            "name": "Route",
+            "description": "Operations related to Routes management"
+        },
+        {
+            "name": "Stop",
+            "description": "Operations related to stops management"
+        },
+        {
+            "name": "Stoptimes",
+            "description": "Operations related to stoptimes management"
+        },
+        {
+            "name": "Trip",
+            "description": "Operations related to trips management"
+        },
+        {
+            "name": "Timetable",
+            "description": "Operations related to timetable "
+        }
+    ],
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "login": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "session": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "tokenExpiration": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "agency": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "agency_name": {
+                    "type": "string"
+                },
+                "agency_url": {
+                    "type": "string"
+                },
+                "agency_timezone": {
+                    "type": "string"
+                },
+                "agency_phone": {
+                    "type": "string"
+                },
+                "agency_lang": {
+                    "type": "string"
+                }
+            }
+        },
+        "user": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "administrator": {
+                    "type": "boolean"
+                },
+                "Agency": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "user_agency": {
+            "type": "object",
+            "properties": {
+                "agency": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_vehicle": {
+            "type": "object",
+            "properties": {
+                "vehicle": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_calendar": {
+            "type": "object",
+            "properties": {
+                "calendar": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_route": {
+            "type": "object",
+            "properties": {
+                "route": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_stop": {
+            "type": "object",
+            "properties": {
+                "stop": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_trip": {
+            "type": "object",
+            "properties": {
+                "trip": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_stoptimes": {
+            "type": "object",
+            "properties": {
+                "stoptime": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "calendar": {
+            "type": "object",
+            "properties": {
+                "monday": {
+                    "type": "integer"
+                },
+                "tuesday": {
+                    "type": "integer"
+                },
+                "wednesday": {
+                    "type": "integer"
+                },
+                "thursday": {
+                    "type": "integer"
+                },
+                "friday": {
+                    "type": "integer"
+                },
+                "saturday": {
+                    "type": "integer"
+                },
+                "sunday": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "route": {
+            "type": "object",
+            "properties": {
+                "agency_id": {
+                    "type": "string"
+                },
+                "route_short_name": {
+                    "type": "string"
+                },
+                "route_long_name": {
+                    "type": "string"
+                },
+                "route_desc": {
+                    "type": "string"
+                },
+                "route_type": {
+                    "type": "integer"
+                },
+                "route_url": {
+                    "type": "string"
+                },
+                "route_color": {
+                    "type": "string"
+                },
+                "route_text_color": {
+                    "type": "string"
+                }
+            }
+        },
+        "trip": {
+            "type": "object",
+            "properties": {
+                "route_id": {
+                    "type": "string"
+                },
+                "service_id": {
+                    "type": "string"
+                },
+                "trip_headsign": {
+                    "type": "string"
+                },
+                "trip_short_name": {
+                    "type": "string"
+                },
+                "direction_id": {
+                    "type": "integer"
+                },
+                "block_id": {
+                    "type": "string"
+                },
+                "vehicle_id": {
+                    "type": "string"
+                },
+                "schedule_relationship": {
+                    "type": "string",
+                    "enum": [
+                        "SCHEDULED",
+                        "CANCELED"
+                    ]
+                }
+            }
+        },
+        "stop": {
+            "type": "object",
+            "properties": {
+                "stop_code": {
+                    "type": "string"
+                },
+                "stop_name": {
+                    "type": "string"
+                },
+                "stop_desc": {
+                    "type": "string"
+                },
+                "stop_lon": {
+                    "type": "string"
+                },
+                "stop_lat": {
+                    "type": "string"
+                }
+            }
+        },
+        "stoptime": {
+            "type": "object",
+            "properties": {
+                "trip_id": {
+                    "type": "string"
+                },
+                "stop_id": {
+                    "type": "string"
+                },
+                "arrival_time": {
+                    "type": "string"
+                },
+                "departure_time": {
+                    "type": "string"
+                },
+                "stop_headsign": {
+                    "type": "string"
+                },
+                "stop_sequence": {
+                    "type": "integer"
+                },
+                "pickup_type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "vehicle": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "uniqueId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "fixTime": {
+                    "type": "string"
+                },
+                "speed": {
+                    "type": "integer"
+                },
+                "course": {
+                    "type": "integer"
+                },
+                "positionId": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "paths": {
+        "/api/agency": {
+            "get": {
+                "tags": [
+                    "Agency"
+                ],
+                "description": "Get a list of Agency",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of Agency"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new agency",
+                "description": "Create a new agency in the system",
+                "tags": [
+                    "Agency"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "agency object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agency created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/agency/{id}": {
+            "get": {
+                "summary": "get agency by id ",
+                "description": "Updates an existing agency with new information",
+                "tags": [
+                    "Agency"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing agency",
+                "description": "Updates an existing agency with new information",
+                "tags": [
+                    "Agency"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete agency by id ",
+                "description": "delete an existing agency",
+                "tags": [
+                    "Agency"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Get a list of users",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of users"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new agency",
+                "description": "Create a new agency in the system",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "user object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/user/{id}": {
+            "put": {
+                "summary": "Update an existing user",
+                "description": "Updates an existing user with new information",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "get": {
+                "summary": "get agency by id ",
+                "description": "Updates an existing agency with new information",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/agency"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete user by id ",
+                "description": "delete an existing user",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/agency": {
+            "post": {
+                "summary": "ADD an agency to a user",
+                "description": "ADD an agency to a specific user",
+                "tags": [
+                    "User/Agencies"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_agency"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP an agency to a user",
+                "description": "DROP an agency to a specific user",
+                "tags": [
+                    "User/Agencies"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_agency"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/vehicle": {
+            "post": {
+                "summary": "ADD an vehicle to a user",
+                "description": "ADD an vehicle to a specific user",
+                "tags": [
+                    "User/Vehicle"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_vehicle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/vehicle"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP an vehicle to a user",
+                "description": "DROP an vehicle to a specific user",
+                "tags": [
+                    "User/Vehicle"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_vehicle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/calendar": {
+            "post": {
+                "summary": "ADD an calendar to a user",
+                "description": "ADD an calendar to a specific user",
+                "tags": [
+                    "User/Calendars"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_calendar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP a calendar to a user",
+                "description": "DROP a calendar to a specific user",
+                "tags": [
+                    "User/Calendars"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_calendar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/stop": {
+            "post": {
+                "summary": "ADD stop to a user",
+                "description": "ADD stop to a specific user",
+                "tags": [
+                    "User/Stops"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_stop"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP stop to a user",
+                "description": "DROP stop to a specific user",
+                "tags": [
+                    "User/Stops"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_stop"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/trip": {
+            "post": {
+                "summary": "ADD trip to a user",
+                "description": "ADD trip to a specific user",
+                "tags": [
+                    "User/Trips"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_trip"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP trip to a user",
+                "description": "DROP trip to a specific user",
+                "tags": [
+                    "User/Trips"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_trip"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/route": {
+            "post": {
+                "summary": "ADD route to a user",
+                "description": "ADD route to a specific user",
+                "tags": [
+                    "User/Routes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_route"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP route to a user",
+                "description": "DROP route to a specific user",
+                "tags": [
+                    "User/Routes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_route"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/user/stoptime": {
+            "post": {
+                "summary": "ADD stoptimes to a user",
+                "description": "ADD stoptimes to a specific user",
+                "tags": [
+                    "User/Stoptimes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_stoptimes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DROP stoptimes to a user",
+                "description": "DROP stoptimes to a specific user",
+                "tags": [
+                    "User/Stoptimes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_stoptimes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/calendar": {
+            "get": {
+                "tags": [
+                    "Calendar"
+                ],
+                "description": "Get a list of calanders",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of calenders"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new calendar",
+                "description": "Create a new calendar in the system",
+                "tags": [
+                    "Calendar"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "calendar object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/calendar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "calendar created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/calendar"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/calendar/{id}": {
+            "get": {
+                "summary": "get calendar by id ",
+                "description": "Updates an existing calendar with new information",
+                "tags": [
+                    "Calendar"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/calendar"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing calendar",
+                "description": "Updates an existing calendar with new information",
+                "tags": [
+                    "Calendar"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/calendar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/calendar"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete calendar by id ",
+                "description": "delete an existing calendar",
+                "tags": [
+                    "Calendar"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/calendar"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/route": {
+            "get": {
+                "tags": [
+                    "Route"
+                ],
+                "description": "Get a list of routes",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of routes"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new route",
+                "description": "Create a new route in the system",
+                "tags": [
+                    "Route"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "route object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "route created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/route/{id}": {
+            "get": {
+                "summary": "get route by id ",
+                "description": "Updates an existing route with new information",
+                "tags": [
+                    "Route"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing route",
+                "description": "Updates an existing route with new information",
+                "tags": [
+                    "Route"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete route by id ",
+                "description": "delete an existing route",
+                "tags": [
+                    "Route"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/stoptime": {
+            "get": {
+                "tags": [
+                    "Stoptimes"
+                ],
+                "description": "Get a list of stoptimes",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of stoptimes"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new stoptimes",
+                "description": "Create a new stoptimes in the system",
+                "tags": [
+                    "Stoptimes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "stoptimes object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/stoptime"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "route created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/stoptime"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/stoptime/{id}": {
+            "get": {
+                "summary": "get stoptime by id ",
+                "description": "Updates an existing stoptime with new information",
+                "tags": [
+                    "Stoptimes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/stoptime"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing stoptime",
+                "description": "Updates an existing stoptime with new information",
+                "tags": [
+                    "Stoptimes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/stoptime"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/stoptime"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete stoptime by id ",
+                "description": "delete an existing stoptime",
+                "tags": [
+                    "Stoptimes"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/stoptime"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/stop": {
+            "get": {
+                "tags": [
+                    "Stop"
+                ],
+                "description": "Get a list of stops",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of stops"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new stop",
+                "description": "Create a new stop in the system",
+                "tags": [
+                    "Stop"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "stop object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/stop"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stop created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/stop"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/stop/{id}": {
+            "get": {
+                "summary": "get stop by id ",
+                "description": "Updates an existing stop with new information",
+                "tags": [
+                    "Stop"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/stop"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing stop",
+                "description": "Updates an existing stop with new information",
+                "tags": [
+                    "Stop"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/stop"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/stop"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete stop by id ",
+                "description": "delete an existing stop",
+                "tags": [
+                    "Stop"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/stop"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/trip": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "description": "Get a list of trips",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of trips"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new trip",
+                "description": "Create a new trip in the system",
+                "tags": [
+                    "Trip"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "trip object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trip"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "trip created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/trip"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/trip/{id}": {
+            "get": {
+                "summary": "get trip by id ",
+                "description": "Updates an existing trip with new information",
+                "tags": [
+                    "Trip"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/trip"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing trip",
+                "description": "Updates an existing trip with new information",
+                "tags": [
+                    "Trip"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trip"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/trip"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete trip by id ",
+                "description": "delete an existing trip",
+                "tags": [
+                    "Trip"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/trip"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/session": {
+            "post": {
+                "summary": "Create a new session",
+                "description": "Create a new stop in the system",
+                "tags": [
+                    "Session"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "session object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "session created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/session"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/vehicle": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "description": "Get a list of vehicles",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of vehicles"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/{id}": {
+            "get": {
+                "summary": "get vehicle by id ",
+                "description": "Updates an existing vehicle with new information",
+                "tags": [
+                    "Vehicle"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/vehicle"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated!"
+                    }
+                }
+            }
+        },
+        "/api/timetable": {
+            "get": {
+                "tags": [
+                    "Timetable"
+                ],
+                "description": "Get a list of timetable for now ",
+                "responses": {
+                    "200": {
+                        "description": "A list of timetable for now "
+                    }
+                }
+            }
+        },
+        "/api/timetable/{agency}": {
+            "get": {
+                "summary": "get timetable by agency ",
+                "description": "get timetable for specific agency .",
+                "tags": [
+                    "Timetable"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "agency",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/api/timetable/{agency}/{stop}": {
+            "get": {
+                "summary": "get timetable by agency for specific stop ",
+                "description": "get timetable for specific agency  for specifc stop.",
+                "tags": [
+                    "Timetable"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "agency",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "stop",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        }
+    }
+}
