@@ -1,5 +1,5 @@
 {
-  "name": "sonotrak_backend",
+  "name": "pfe_backend",
   "version": "1.0.0",
   "description": "The backend version of sonotrak application ",
   "main": "index.js",

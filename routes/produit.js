@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const router = express.Router();
-const { getLoggerUser, getUserAgencies } = require("../helper/user_permission");
+const { getLoggerUser, getUserProduits } = require("../helper/user_permission");
 
 const querystring = require("querystring");
 const url = require("url");
@@ -42,28 +42,26 @@ router.post(`/${endpoint}`, async (req, res) => {
   }
 });
 
-
-
 //  Get all available agencies.
 router.get(`/${endpoint}`, async (req, res) => {
   try {
     if (!req.isAuth) {
       return res.status(401).json({ message: "Unauthenticated!" });
     }
-    const user = await getUserAgencies(req.userId);
+    const user = await getUserProduits(req.userId);
 
     if (user.administrator) {
       const urlParts = url.parse(req.url);
       const userId = querystring.parse(urlParts.query).userId;
       if (userId) {
-        const data = await getUserAgencies(userId);
-        return res.json(data.agencies);
+        const data = await getUserProduits(userId);
+        return res.json(data.produits);
       }
-      const agencies = await Model.find();
-      return res.json(agencies);
+      const produits = await Model.find();
+      return res.json(produits);
     } else {
-      const agencies = user.agencies;
-      return res.json(agencies);
+      const produits = user.produits;
+      return res.json(produits);
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -76,28 +74,17 @@ router.get(`/${endpoint}/:id`, async (req, res) => {
     if (!req.isAuth) {
       return res.status(401).json({ message: "Unauthenticated!" });
     }
-    const name = req.query.name;
-    const user = await getUserAgencies(req.userId);
+    const user = await getUserProduits(req.userId);
     if (user.administrator) {
-      if (name) {
-        const data = await Model.findOne({ agency_name: req.params.id });
-        return res.json(data);
-      } else {
         const data = await Model.findById(req.params.id);
         return res.json(data);
-      }
+      
     } else {
-      if (name) {
-        const data = await user.agencies.find(
-          (agency) => agency.agency_name == req.params.id
+        const data = await user.produits.find(
+          (produit) => produit._id == req.params.id
         );
         return res.json(data);
-      } else {
-        const data = await user.agencies.find(
-          (agency) => agency._id == req.params.id
-        );
-        return res.json(data);
-      }
+      
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -113,16 +100,16 @@ router.put(`/${endpoint}/:id`, async (req, res) => {
     const id = req.params.id;
     const updatedData = req.body;
     const options = { new: true };
-    const user = await getUserAgencies(req.userId);
+    const user = await getUserProduits(req.userId);
 
-    const agency = await user.agencies.find(
-      (agency) => agency._id == req.params.id
+    const produit = await user.agencies.find(
+      (produit) => produit._id == req.params.id
     );
-    if (!user.administrator && !agency) {
+    if (!user.administrator && !produit) {
       return res.status(401).json({ message: "Unauthenticated!" });
     }
 
-    delete updatedData["agency_id"];
+    delete updatedData["produit_id"];
 
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
     res.send(result);
@@ -138,25 +125,22 @@ router.delete(`/${endpoint}/:id`, async (req, res) => {
       return res.status(401).json({ message: "Unauthenticated!" });
     }
     const id = req.params.id;
-    const user = await getUserAgencies(req.userId);
+    const user = await getUserProduits(req.userId);
 
-    const agency = await user.agencies.find(
-      (agency) => agency._id == req.params.id
+    const produit = await user.produits.find(
+      (produit) => produit._id == req.params.id
     );
-    if (!user.administrator && !agency) {
+    if (!user.administrator && !produit) {
       return res.status(401).json({ message: "Unauthenticated!" });
     }
-
     const data = await Model.findByIdAndDelete(id);
-    const user_agency = await User.find({ agencies: { $in: [id] } });
-
-    user_agency.forEach((user) => {
-      const index = user.agencies.findIndex((item) => item == id);
-      user.agencies.splice(index, 1);
+    const user_produit = await User.find({ produits: { $in: [id] } });
+    user_produit.forEach((user) => {
+      const index = user.produits.findIndex((item) => item == id);
+      user.produits.splice(index, 1);
       user.save();
     });
-
-    res.send(`Agency ${data.agency_name} has been deleted..`);
+    res.send(`Produits has been deleted..`);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

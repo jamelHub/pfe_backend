@@ -6,13 +6,9 @@ const Model = require('../models/user');
 const router = express.Router();
 const {
   getLoggerUser,
-  findAgency,
-  findCalendar,
-  findRoute,
-  findStop,
-  findStopTime,
-  findTrip,
-  findVehicle,
+  findDepartement,
+  findOf,
+  findDefaut
 } = require('../helper/user_permission');
 
 const endpoint = 'user';
@@ -21,9 +17,9 @@ const endpoint = 'user';
 router.post(`/${endpoint}`, async (req, res) => {
   const user = await getLoggerUser(req.userId);
 
-  /*if (!req.isAuth || !user.administrator) {
+  if (!req.isAuth || !user.administrator) {
      return res.status(401).json({ message: 'Unauthenticated!' });
-  }*/
+  }
   try {
     const checkUser = await Model.findOne({ email: req.body.email });
     if (!checkUser) {
@@ -57,8 +53,8 @@ router.get(`/${endpoint}`, async (req, res) => {
     }
     const data = await Model.find();
     let response = [];
-    data.forEach((agency) => {
-      response.push({ ...agency._doc, password: null });
+    data.forEach((user) => {
+      response.push({ ...user._doc, password: null });
     });
     return res.status(200).json(response);
   } catch (error) {
@@ -78,14 +74,9 @@ router.get(`/${endpoint}/:id`, async (req, res) => {
         return res.status(401).json({ message: 'Unauthenticated!' });
       }
     }
-    const name = req.query.name;
-    if (name) {
-      const data = await Model.findOne({ agency_name: req.params.id });
-      return res.status(200).json({ ...data._doc, password: null });
-    } else {
       const data = await Model.findById(req.params.id);
       return res.json(data);
-    }
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -115,27 +106,20 @@ router.put(`/${endpoint}/:id`, async (req, res) => {
       updatedData['password'] = hashedPassword;
     }
     //// disable updating the relationshipp between the table ////
-    if (updatedData['agencies']) {
-      delete updatedData['agencies'];
+    if (updatedData['produits']) {
+      delete updatedData['produits'];
     }
-    if (updatedData['calendars']) {
-      delete updatedData['calendars'];
+    if (updatedData['ofs']) {
+      delete updatedData['ofs'];
     }
-    if (updatedData['stops']) {
-      delete updatedData['stops'];
+    if (updatedData['departements']) {
+      delete updatedData['departements'];
     }
-    if (updatedData['stoptimes']) {
-      delete updatedData['stoptimes'];
+    if (updatedData['defauts']) {
+      delete updatedData['defauts'];
     }
-    if (updatedData['routes']) {
-      delete updatedData['routes'];
-    }
-    if (updatedData['trips']) {
-      delete updatedData['trips'];
-    }
-    if (updatedData['vehicles']) {
-      delete updatedData['vehicles'];
-    }
+   
+    
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
     return res.status(200).json({ ...result._doc, password: null });
   } catch (error) {
@@ -155,8 +139,8 @@ router.delete(`/${endpoint}/produit`, async (req, res) => {
     const userId = req.body.user;
     const oldproduit = req.body.produit;
     const result = await Model.findById(userId);
-    result.agencies.pull(oldproduit);
-    result.update({ _id: userId }, { $pull: { agencies: oldproduit } });
+    result.produits.pull(oldproduit);
+    result.update({ _id: userId }, { $pull: { produits: oldproduit } });
     result.save();
     return res.status(200).json({ ...result._doc, password: null });
   } catch (error) {
@@ -180,11 +164,11 @@ router.post(`/${endpoint}/Produit`, async (req, res) => {
         .json({ message: 'there is no Produit with this ID' });
     }
     const result = await Model.findById(userId);
-    const alreadyadded = result.agencies.includes(newProduit);
+    const alreadyadded = result.produits.includes(newProduit);
     if (alreadyadded) {
       return res.status(200).json({ ...result._doc, password: null });
     }
-    result.agencies.push(newProduit);
+    result.produits.push(newProduit);
     await result.save();
 
     return res.status(200).json({ ...result._doc, password: null });
@@ -193,7 +177,7 @@ router.post(`/${endpoint}/Produit`, async (req, res) => {
   }
 });
 
-/////////////// Manage user calendars   //////////////////////
+/////////////// Manage user departement   //////////////////////
 
 router.delete(`/${endpoint}/departement`, async (req, res) => {
   try {
@@ -224,7 +208,7 @@ router.post(`/${endpoint}/departement`, async (req, res) => {
     const userId = req.body.user;
     const newdepartement = req.body.departement;
 
-    const checkdepartement = await finddepartement(newdepartement);
+    const checkdepartement = await findDepartement(newdepartement);
     if (!checkdepartement) {
       return res
         .status(400)
@@ -244,7 +228,7 @@ router.post(`/${endpoint}/departement`, async (req, res) => {
   }
 });
 
-/////////////// Manage user routes   //////////////////////
+/////////////// Manage user of   //////////////////////
 
 router.delete(`/${endpoint}/of`, async (req, res) => {
   try {
@@ -274,7 +258,7 @@ router.post(`/${endpoint}/of`, async (req, res) => {
     const userId = req.body.user;
     const newof = req.body.of;
 
-    const checkof = await findof(newof);
+    const checkof = await findOf(newof);
     if (!checkof) {
       return res.status(400).json({ message: 'there is no of with this ID' });
     }
@@ -292,7 +276,7 @@ router.post(`/${endpoint}/of`, async (req, res) => {
   }
 });
 
-/////////////// Manage user trips   //////////////////////
+/////////////// Manage user defaut   //////////////////////
 
 router.delete(`/${endpoint}/defaut`, async (req, res) => {
   try {
@@ -323,7 +307,7 @@ router.post(`/${endpoint}/defaut`, async (req, res) => {
     const userId = req.body.user;
     const newdefaut = req.body.defaut;
 
-    const checkdefaut = await finddefaut(newdefaut);
+    const checkdefaut = await findDefaut(newdefaut);
     if (!checkdefaut) {
       return res
         .status(400)

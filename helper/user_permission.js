@@ -6,7 +6,7 @@ const Departement = require('../models/departement');
 
 const Defaut = require('../models/defaut');
 
-exports.getUserProduit = async (userId) =>
+exports.getUserProduits = async (userId) =>
   await User.findById(userId).populate('produits');
 
 exports.getUserOfs = async (userId) =>
