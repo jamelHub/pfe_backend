@@ -18,10 +18,18 @@ const defautSchema = new Schema(
       required: true,
     },
 
-    nbre_produit: {
+    qtDefaux: {
       type: Number,
-      required: true,
       default: 0,
+    },
+    totDefaux: {
+      type: Number,
+      default: 0,
+    },
+    departements: {
+      type: [Schema.Types.ObjectId],
+      ref: "departements",
+      required: false,
     },
   },
   { timestamps: true }

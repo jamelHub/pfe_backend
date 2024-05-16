@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/user');
+const Model = require('../models/of');
 const router = express.Router();
 const { getLoggerUser, getUserOfs } = require('../helper/user_permission');
 
@@ -36,7 +36,7 @@ router.post(`/${endpoint}`, async (req, res) => {
   }
 });
 
-//  Get all available agencies.
+//  Get all available ofs.
 router.get(`/${endpoint}`, async (req, res) => {
   try {
     if (!req.isAuth) {
@@ -62,7 +62,7 @@ router.get(`/${endpoint}`, async (req, res) => {
   }
 });
 
-//  Get agency by ID or or NAME
+//  Get of by ID or or NAME
 router.get(`/${endpoint}/:id`, async (req, res) => {
   try {
     if (!req.isAuth) {
@@ -92,7 +92,7 @@ router.put(`/${endpoint}/:id`, async (req, res) => {
     const options = { new: true };
     const user = await getUserOfs(req.userId);
 
-    const of = await user.agencies.find((of) => of._id == req.params.id);
+    const of = await user.ofs.find((of) => of._id == req.params.id);
     if (!user.administrator && !of) {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }

@@ -10,7 +10,7 @@ const endpoint = 'session';
 //  Post new Session .
 router.post(`/${endpoint}`, async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ matricule: req.body.matricule });
 
     if (!user) {
       return res.status(400).json({ message: 'User does not exist! ' });
@@ -21,7 +21,7 @@ router.post(`/${endpoint}`, async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.id, matricule: user.matricule },
       'somesupersecretkey',
       {
         expiresIn: '24h',
@@ -32,6 +32,7 @@ router.post(`/${endpoint}`, async (req, res) => {
     ).exp;
    return  res.status(200).json({
       email: user.email,
+      matricule: user.matricule,
       administrator: user.administrator,
       token: {
         data: token,

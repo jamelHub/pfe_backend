@@ -1,5 +1,5 @@
 const express = require("express");
-const User = require("../models/user");
+const Model = require("../models/produit");
 const router = express.Router();
 const { getLoggerUser, getUserProduits } = require("../helper/user_permission");
 
@@ -8,7 +8,7 @@ const url = require("url");
 
 const endpoint = "produit";
 
-//  Post  new agancy .
+//  Post  new produit .
 router.post(`/${endpoint}`, async (req, res) => {
   try {
     const user = await getLoggerUser(req.userId);
@@ -18,7 +18,6 @@ router.post(`/${endpoint}`, async (req, res) => {
     }
 
     const produitsList = await getUserProduits(req.userId);
-
     const checkAgencyId = produitsList.produits.some(
       (produit) => produit.produit_id == req.body.produit_id
     );
@@ -28,8 +27,8 @@ router.post(`/${endpoint}`, async (req, res) => {
         .json({ message: "This produit_id is already taken" });
     }
     const data = new Model({
-      produit_name: req.body.produit_name,
-      
+      name: req.body.produit_name,  
+      description: req.body.description,  
       produit_id: req.body.produit_id,
     });
 
@@ -42,7 +41,7 @@ router.post(`/${endpoint}`, async (req, res) => {
   }
 });
 
-//  Get all available agencies.
+//  Get all available produits.
 router.get(`/${endpoint}`, async (req, res) => {
   try {
     if (!req.isAuth) {
@@ -68,7 +67,7 @@ router.get(`/${endpoint}`, async (req, res) => {
   }
 });
 
-//  Get agency by ID or or NAME
+//  Get produit by ID or or NAME
 router.get(`/${endpoint}/:id`, async (req, res) => {
   try {
     if (!req.isAuth) {

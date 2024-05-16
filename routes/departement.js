@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/user');
+const Model = require('../models/departement');
 const router = express.Router();
 const { getLoggerUser, getUserDepartements } = require('../helper/user_permission');
 
@@ -40,7 +40,7 @@ router.post(`/${endpoint}`, async (req, res) => {
   }
 });
 
-//  Get all available agencies.
+//  Get all available departements.
 router.get(`/${endpoint}`, async (req, res) => {
   try {
     if (!req.isAuth) {

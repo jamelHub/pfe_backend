@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/user');
+const Model = require('../models/defaut');
 const router = express.Router();
 const { getLoggerUser, getUserDefaut } = require('../helper/user_permission');
 
@@ -8,7 +8,7 @@ const url = require('url');
 
 const endpoint = 'defaut';
 
-//  Post  new agancy .
+//  Post  new defaut .
 router.post(`/${endpoint}`, async (req, res) => {
   try {
     const user = await getLoggerUser(req.userId);
@@ -30,7 +30,8 @@ router.post(`/${endpoint}`, async (req, res) => {
     const data = new Model({
       code: req.body.code,
       designation: req.body.designation,
-      nbre_produit: req.body.nbre_produit,
+      totDefaux: req.body.totDefaux,
+      qtDefaux : req.body.qtDefaux
     });
 
     const dataToSave = await data.save();
@@ -42,7 +43,7 @@ router.post(`/${endpoint}`, async (req, res) => {
   }
 });
 
-//  Get all available agencies.
+//  Get all available defaux.
 router.get(`/${endpoint}`, async (req, res) => {
   try {
     if (!req.isAuth) {

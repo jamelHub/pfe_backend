@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-var validator = require('validator');
+const mongoose = require("mongoose");
+var validator = require("validator");
 
 const Schema = mongoose.Schema;
 
@@ -7,11 +7,13 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    validate: [validator.isEmail, 'invalid email'],
+    validate: [validator.isEmail, "invalid email"],
+    unique: true,
   },
   matricule: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -33,24 +35,24 @@ const userSchema = new Schema({
   ////////////// relations ////////////
   defauts: {
     type: [Schema.Types.ObjectId],
-    ref: 'defaut',
+    ref: "defaut",
     required: false,
   },
   departements: {
     type: [Schema.Types.ObjectId],
-    ref: 'departements',
+    ref: "departements",
     required: false,
   },
   ofs: {
     type: [Schema.Types.ObjectId],
-    ref: 'of',
+    ref: "of",
     required: false,
   },
   produits: {
     type: [Schema.Types.ObjectId],
-    ref: 'produit',
+    ref: "produit",
     required: false,
   },
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

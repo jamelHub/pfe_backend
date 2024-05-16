@@ -22,6 +22,12 @@ router.post(`/${endpoint}`, async (req, res) => {
   }
   try {
     const checkUser = await Model.findOne({ email: req.body.email });
+    const checkMatricule = await Model.findOne({ matricule: req.body.matricule });
+    if(checkMatricule){
+      return res.status(400).json({ message: 'matricule is already existe' });
+
+    }
+
     if (!checkUser) {
       const hashedPassword = await bcrypt.hash(req.body.password, 12);
       const data = new Model({
@@ -67,13 +73,10 @@ router.get(`/${endpoint}`, async (req, res) => {
 router.get(`/${endpoint}/:id`, async (req, res) => {
   const user = await getLoggerUser(req.userId);
   try {
-    if (!req.isAuth) {
+    if (!req.isAuth || !user.administrator) {
       return res.status(401).json({ message: 'Unauthenticated!' });
-    } else {
-      if (user.id != req.params.id && !user.administrator) {
-        return res.status(401).json({ message: 'Unauthenticated!' });
-      }
-    }
+    } 
+    
       const data = await Model.findById(req.params.id);
       return res.json(data);
     
@@ -124,6 +127,24 @@ router.put(`/${endpoint}/:id`, async (req, res) => {
     return res.status(200).json({ ...result._doc, password: null });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+});
+
+
+router.delete(`/${endpoint}/:id`, async (req, res) => {
+  try {
+    const userIsAdmin = await getLoggerUser(req.userId);
+    if (!req.isAuth || !userIsAdmin.administrator) {
+      return res.status(401).json({ message: "Unauthenticated!" });
+    }
+    const id = req.params.id;
+
+  
+    const data = await Model.findByIdAndDelete(id);
+ 
+    res.send(`user has been deleted..`);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 

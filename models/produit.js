@@ -7,9 +7,12 @@ const produitSchema = new Schema({
     type: String,
     required: true,
   },
-  produit_name: {
+  name: {
     type: String,
     required: true,
+  },
+  description: {
+    type: String,
   },
 });
 
