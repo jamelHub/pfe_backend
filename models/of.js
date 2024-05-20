@@ -9,13 +9,13 @@ const ofSchema = new Schema(
       required: true,
     },
 
-    departements: [
+    departements: 
       {
         type: [Schema.Types.ObjectId],
         ref: "departement",
         required: false,
       },
-    ],
+  
   },
 
   

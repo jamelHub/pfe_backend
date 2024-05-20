@@ -3,7 +3,7 @@ const Model = require('../models/defaut');
 const router = express.Router();
 const { getLoggerUser } = require('../helper/user_permission');
 
-const endpoint = 'defaut';
+const endpoint = 'defauts';
 
 //  Post  new defaut .
 router.post(`/${endpoint}`, async (req, res) => {

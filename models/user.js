@@ -4,6 +4,7 @@ var validator = require("validator");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+  
   email: {
     type: String,
     required: true,
@@ -14,6 +15,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+  },
+
+  name: {
+    type: String,
+    required: true,
   },
   password: {
     type: String,
@@ -33,11 +39,11 @@ const userSchema = new Schema({
   },
 
   ////////////// relations ////////////
-  produits: [{
+  produits: {
     type: [Schema.Types.ObjectId],
     ref: "produit",
     required: false,
-  }],
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);

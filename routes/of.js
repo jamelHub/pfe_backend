@@ -4,7 +4,7 @@ const router = express.Router();
 const { getLoggerUser } = require('../helper/user_permission');
 
 
-const endpoint = 'of';
+const endpoint = 'ofs';
 
 //  Post  new agancy .
 router.post(`/${endpoint}`, async (req, res) => {

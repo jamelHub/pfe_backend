@@ -8,7 +8,7 @@ const {
   getLoggerUser,
 } = require("../helper/user_permission");
 
-const endpoint = "user";
+const endpoint = "users";
 
 //  Post  new User .
 router.post(`/${endpoint}`, async (req, res) => {
@@ -74,7 +74,7 @@ router.get(`/${endpoint}/:id`, async (req, res) => {
       return res.status(401).json({ message: "Unauthenticated!" });
     }
 
-    const data = await Model.findById(req.params.id);
+    const data = await Model.findById(req.params.id).populate('produits');
     return res.json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -104,7 +104,16 @@ router.put(`/${endpoint}/:id`, async (req, res) => {
       const hashedPassword = await bcrypt.hash(updatedData["password"], 12);
       updatedData["password"] = hashedPassword;
     }
-    const result = await Model.findByIdAndUpdate(id, updatedData, options);
+
+
+      const result = await Model.findByIdAndUpdate(
+        req.params.id,
+        { $set: updatedData },
+        { new: true, runValidators: true }
+      );
+   
+
+   // const result = await Model.findByIdAndUpdate(id, updatedData, options);
     return res.status(200).json({ ...result._doc, password: null });
   } catch (error) {
     return res.status(500).json({ message: error.message });

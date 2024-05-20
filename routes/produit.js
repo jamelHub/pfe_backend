@@ -6,7 +6,7 @@ const { getLoggerUser, getUserProduits } = require("../helper/user_permission");
 const querystring = require("querystring");
 const url = require("url");
 
-const endpoint = "produit";
+const endpoint = "produits";
 
 //  Post  new produit .
 router.post(`/${endpoint}`, async (req, res) => {

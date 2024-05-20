@@ -10,13 +10,13 @@ const produitSchema = new Schema({
   description: {
     type: String,
   },
-  ofs: [
+  ofs: 
     {
       type: [Schema.Types.ObjectId],
       ref: "of",
       required: false,
     },
-  ],
+  
 });
 
 module.exports = mongoose.model("produit", produitSchema);

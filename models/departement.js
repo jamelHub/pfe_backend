@@ -8,13 +8,13 @@ const departementSchema = new Schema({
     required: true,
   },
 
-  defauts: [
+  defauts: 
     {
       type: [Schema.Types.ObjectId],
       ref: "defaut",
       required: false,
     },
-  ],
+
 });
 
 module.exports = mongoose.model('departement', departementSchema);
