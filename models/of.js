@@ -4,16 +4,21 @@ const Schema = mongoose.Schema;
 
 const ofSchema = new Schema(
   {
-    of_id: {
-      type: String,
-      required: true,
-    },
-
     name: {
       type: String,
       required: true,
     },
+
+    departements: [
+      {
+        type: [Schema.Types.ObjectId],
+        ref: "departement",
+        required: false,
+      },
+    ],
   },
+
+  
   { timestamps: true }
 );
 

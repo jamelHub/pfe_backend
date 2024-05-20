@@ -5,9 +5,11 @@ const mongoose = require('mongoose');
 
 const produitRoutes = require('./routes/produit');
 //const ofRoutes = require('./routes/calendar');
-//const departementRoutes = require('./routes/routes');
-//const defautRoutes = require('./routes/stop_times');
+const departementRoutes = require('./routes/departement');
+const defautRoutes = require('./routes/defaut');
 const userRoutes = require('./routes/user');
+const ofRoutes = require('./routes/of');
+
 
 const sessionRoutes = require('./routes/session');
 
@@ -39,9 +41,15 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(isAuth);
 
-app.use('/api', produitRoutes);
+app.use('/api', ofRoutes);
 app.use('/api', userRoutes);
 app.use('/api', sessionRoutes);
+app.use('/api', produitRoutes);
+app.use('/api', departementRoutes);
+app.use('/api', defautRoutes);
+
+
+
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

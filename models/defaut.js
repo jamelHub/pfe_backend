@@ -4,11 +4,6 @@ const Schema = mongoose.Schema;
 
 const defautSchema = new Schema(
   {
-    defaut_id: {
-      type: String,
-      required: true,
-    },
-
     code: {
       type: String,
       required: true,
@@ -26,9 +21,9 @@ const defautSchema = new Schema(
       type: Number,
       default: 0,
     },
-    departements: {
+    departement: {
       type: [Schema.Types.ObjectId],
-      ref: "departements",
+      ref: "departement",
       required: false,
     },
   },

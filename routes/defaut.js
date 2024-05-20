@@ -1,10 +1,7 @@
 const express = require('express');
 const Model = require('../models/defaut');
 const router = express.Router();
-const { getLoggerUser, getUserDefaut } = require('../helper/user_permission');
-
-const querystring = require('querystring');
-const url = require('url');
+const { getLoggerUser } = require('../helper/user_permission');
 
 const endpoint = 'defaut';
 
@@ -17,26 +14,19 @@ router.post(`/${endpoint}`, async (req, res) => {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
 
-    const defautList = await getUserDefaut(req.userId);
 
-    const checkDefautId = defautList.departements.some(
-      (defaut) => defaut.defaut_id == req.body.defaut_id
-    );
-    if (checkDefautId) {
-      return res
-        .status(400)
-        .json({ message: 'This departement_ids is already taken' });
-    }
+ 
     const data = new Model({
       code: req.body.code,
       designation: req.body.designation,
       totDefaux: req.body.totDefaux,
-      qtDefaux : req.body.qtDefaux
+      qtDefaux : req.body.qtDefaux,
+      departement: req.body.departement
+      
+
     });
 
     const dataToSave = await data.save();
-    user.defauts.push(dataToSave.id);
-    await user.save();
     res.status(200).json(dataToSave);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -49,21 +39,11 @@ router.get(`/${endpoint}`, async (req, res) => {
     if (!req.isAuth) {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
-    const user = await getUserDefaut(req.userId);
 
-    if (user.administrator) {
-      const urlParts = url.parse(req.url);
-      const userId = querystring.parse(urlParts.query).userId;
-      if (userId) {
-        const data = await getUserDefaut(userId);
-        return res.json(data.departements);
-      }
-      const defauts = await Model.find();
+  
+      const defauts = await Model.find().populate('departement');
       return res.json(defauts);
-    } else {
-      const defauts = user.defauts;
-      return res.json(defauts);
-    }
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -75,14 +55,9 @@ router.get(`/${endpoint}/:id`, async (req, res) => {
     if (!req.isAuth) {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
-    const user = await getUserDefaut(req.userId);
-    if (user.administrator) {
-      const data = await Model.findById(req.params.id);
+      const data = await Model.findById(req.params.id).populate('departement');
       return res.json(data);
-    } else {
-      const data = await user.defauts.find((defaut) => defaut._id == req.params.id);
-      return res.json(data);
-    }
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -97,15 +72,7 @@ router.put(`/${endpoint}/:id`, async (req, res) => {
     const id = req.params.id;
     const updatedData = req.body;
     const options = { new: true };
-    const user = await getUserDefaut(req.userId);
-
-    const defaut = await user.defauts.find((defaut) => defaut._id == req.params.id);
-    if (!user.administrator && !defaut) {
-      return res.status(401).json({ message: 'Unauthenticated!' });
-    }
-
-    delete updatedData['defaut_id'];
-
+   
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
     res.send(result);
   } catch (error) {
@@ -120,19 +87,12 @@ router.delete(`/${endpoint}/:id`, async (req, res) => {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
     const id = req.params.id;
-    const user = await getUserDefaut(req.userId);
-
-    const defaut = await user.defauts.find((defaut) => defaut._id == req.params.id);
+ 
     if (!user.administrator && !defaut) {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
     const data = await Model.findByIdAndDelete(id);
-    const user_defaut = await User.find({ defauts: { $in: [id] } });
-    user_defaut.forEach((user) => {
-      const index = user.defauts.findIndex((item) => item == id);
-      user.defauts.splice(index, 1);
-      user.save();
-    });
+
     res.send(`defauts has been deleted..`);
   } catch (error) {
     res.status(400).json({ message: error.message });

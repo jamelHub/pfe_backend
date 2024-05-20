@@ -33,26 +33,11 @@ const userSchema = new Schema({
   },
 
   ////////////// relations ////////////
-  defauts: {
-    type: [Schema.Types.ObjectId],
-    ref: "defaut",
-    required: false,
-  },
-  departements: {
-    type: [Schema.Types.ObjectId],
-    ref: "departements",
-    required: false,
-  },
-  ofs: {
-    type: [Schema.Types.ObjectId],
-    ref: "of",
-    required: false,
-  },
-  produits: {
+  produits: [{
     type: [Schema.Types.ObjectId],
     ref: "produit",
     required: false,
-  },
+  }],
 });
 
 module.exports = mongoose.model("user", userSchema);
