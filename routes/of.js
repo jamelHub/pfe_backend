@@ -6,7 +6,7 @@ const { getLoggerUser } = require('../helper/user_permission');
 
 const endpoint = 'ofs';
 
-//  Post  new agancy .
+//  Post  new  .
 router.post(`/${endpoint}`, async (req, res) => {
   try {
     const user = await getLoggerUser(req.userId);

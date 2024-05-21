@@ -13,11 +13,11 @@ const defautSchema = new Schema(
       required: true,
     },
 
-    qtDefaux: {
+    qtDefauts: {
       type: Number,
       default: 0,
     },
-    totDefaux: {
+    totDefauts: {
       type: Number,
       default: 0,
     },

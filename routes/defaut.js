@@ -19,8 +19,8 @@ router.post(`/${endpoint}`, async (req, res) => {
     const data = new Model({
       code: req.body.code,
       designation: req.body.designation,
-      totDefaux: req.body.totDefaux,
-      qtDefaux : req.body.qtDefaux,
+      totDefauts: req.body.totDefauts,
+      qtDefauts : req.body.qtDefauts,
       departement: req.body.departement
       
 
@@ -88,7 +88,7 @@ router.delete(`/${endpoint}/:id`, async (req, res) => {
     }
     const id = req.params.id;
  
-    if (!user.administrator && !defaut) {
+    if (!userIsAdmin.administrator ) {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
     const data = await Model.findByIdAndDelete(id);

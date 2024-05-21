@@ -17,7 +17,7 @@ router.post(`/${endpoint}`, async (req, res) => {
 
     const data = new Model({
       name: req.body.name,
-      defauts: req.body.defauts
+      fichiers: req.body.fichiers
 
     });
 
@@ -36,7 +36,7 @@ router.get(`/${endpoint}`, async (req, res) => {
     }
 
    
-      const departements = await Model.find().populate('defauts');
+      const departements = await Model.find().populate('fichiers');
       return res.json(departements);
     
   } catch (error) {
@@ -50,7 +50,7 @@ router.get(`/${endpoint}/:id`, async (req, res) => {
     if (!req.isAuth) {
       return res.status(401).json({ message: 'Unauthenticated!' });
     }
-      const data = await Model.findById(req.params.id).populate('defauts');
+      const data = await Model.findById(req.params.id).populate('fichiers');
       return res.json(data);
     
   } catch (error) {
@@ -85,7 +85,7 @@ router.delete(`/${endpoint}/:id`, async (req, res) => {
 
  
     const data = await Model.findByIdAndDelete(id);
-    res.send(`departement has been deleted..`);
+    res.send(`Departement has been deleted..`);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

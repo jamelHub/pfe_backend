@@ -8,10 +8,10 @@ const departementSchema = new Schema({
     required: true,
   },
 
-  defauts: 
+  fichiers: 
     {
       type: [Schema.Types.ObjectId],
-      ref: "defaut",
+      ref: "fichier",
       required: false,
     },
 

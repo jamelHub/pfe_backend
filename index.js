@@ -9,6 +9,8 @@ const departementRoutes = require('./routes/departement');
 const defautRoutes = require('./routes/defaut');
 const userRoutes = require('./routes/user');
 const ofRoutes = require('./routes/of');
+const fichieRoutes = require('./routes/fichier');
+
 
 
 const sessionRoutes = require('./routes/session');
@@ -47,6 +49,8 @@ app.use('/api', sessionRoutes);
 app.use('/api', produitRoutes);
 app.use('/api', departementRoutes);
 app.use('/api', defautRoutes);
+app.use('/api', fichieRoutes);
+
 
 
 
