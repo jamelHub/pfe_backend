@@ -1,14 +1,13 @@
-const mongoose = require("mongoose");
-var validator = require("validator");
+const mongoose = require('mongoose');
+var validator = require('validator');
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  
   email: {
     type: String,
     required: true,
-    validate: [validator.isEmail, "invalid email"],
+    validate: [validator.isEmail, 'invalid email'],
     unique: true,
   },
   matricule: {
@@ -16,7 +15,11 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
-
+  rfid: {
+    type: String,
+    required: false,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -41,9 +44,9 @@ const userSchema = new Schema({
   ////////////// relations ////////////
   produits: {
     type: [Schema.Types.ObjectId],
-    ref: "produit",
+    ref: 'produit',
     required: false,
   },
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('user', userSchema);
